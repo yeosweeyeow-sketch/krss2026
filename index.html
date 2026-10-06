@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invigilation Schedule Calendar</title>
-    <!-- Tailwind CSS for styling -->
+    <!-- Tailwind CSS Engine for Responsive UI components -->
     <script src="https://jsdelivr.net"></script>
-    <!-- Alpine.js for lightweight reactivity -->
+    <!-- Alpine.js Core for Frontend Client States -->
     <script defer src="https://jsdelivr.net"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
 
     <div x-data="calendarApp()" x-init="initCalendar()" class="max-w-7xl mx-auto p-4 md:p-6">
         
-        <!-- Header -->
+        <!-- App Title Banner -->
         <header class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200 pb-4 mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Exam Invigilation Schedule</h1>
@@ -61,34 +61,34 @@
             </div>
         </div>
 
-        <!-- Calendar Grid -->
+        <!-- Calendar Month View Layout -->
         <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
-            <!-- Day Header -->
+            <!-- Grid Header Days -->
             <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 text-center text-xs font-bold uppercase tracking-wider text-gray-500 py-3">
                 <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
             </div>
             
-            <!-- Days Grid -->
+            <!-- Structural Calendar Days Matrix Grid -->
             <div class="grid grid-cols-7 bg-gray-200 gap-[1px]">
                 <template x-for="day in calendarDays" :key="day.id">
                     <div class="bg-white min-h-[140px] p-2 flex flex-col justify-between transition"
                          :class="{ 'bg-gray-50/50 opacity-40': !day.isCurrentMonth, 'bg-blue-50/30': day.isToday }">
                         
-                        <!-- Date Indicator -->
+                        <!-- Header Numeric Indicators -->
                         <div class="flex justify-between items-center mb-1">
                             <span class="text-sm font-semibold rounded-full w-6 h-6 flex items-center justify-center"
                                   :class="day.isToday ? 'bg-blue-600 text-white' : 'text-gray-700'" x-text="day.date"></span>
                         </div>
 
-                        <!-- Schedule Items container -->
+                        <!-- Data Cards Core Collection Container -->
                         <div class="space-y-1 flex-1 overflow-y-auto max-h-[105px] pr-1">
                             <template x-for="session in filterSessions(day.fullDate)" :key="session.id">
                                 <div @click="openEditModal(session)" 
-                                     class="text-[10px] p-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-900 cursor-pointer shadow-2xs font-medium transition"
+                                     class="text-[10px] p-1.5 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-900 cursor-pointer shadow-2xs font-medium transition"
                                      :title="session.course + ' - ' + session.invigilator + ' (' + session.room + ')'">
                                     <div class="font-bold flex justify-between">
                                         <span x-text="session.time"></span>
-                                        <span class="text-gray-500" x-text="session.room"></span>
+                                        <span class="text-gray-500 text-[9px]" x-text="session.room"></span>
                                     </div>
                                     <div class="truncate text-gray-700"><span class="font-semibold text-blue-800" x-text="session.invigilator"></span></div>
                                     <div class="truncate text-[9px] text-blue-700" x-text="session.course"></div>
@@ -100,7 +100,7 @@
             </div>
         </div>
 
-        <!-- Add / Edit Modal -->
+        <!-- Crud Workflow Operation Overlay Modal -->
         <div x-show="modal.open" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" x-cloak>
             <div @click.away="modal.open = false" class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100">
                 <h3 class="text-lg font-bold text-gray-900 mb-4" x-text="modal.isEdit ? 'Edit Assignment' : 'Add Assignment'"></h3>
@@ -142,25 +142,26 @@
                                 Cancel
                             </button>
                             <button type="submit" class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
-                                Save
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+
+Save
+
+
+
+
+
 function calendarApp() {
 return {
 currentYear: 2026,
-currentMonth: 9, // October (0-indexed, 9 = Oct, 10 = Nov)
+currentMonth: 9, // 9 = October, 10 = November
 currentMonthName: '',
 calendarDays: [],
 filters: { invigilator: '', date: '' },
-// Parsed Data injected directly from the Duty Roster spreadsheet
+// Embedded structural rosters sourced from spreadsheet database datasets
 sessions: [
-// 07 Oct 2026
+// October 7
 { id: 1, date: '2026-10-07', time: '08:00 AM', invigilator: 'Ng Chong Hern Bennedic', course: '7155 P2 COMPUTING', room: 'R1 (COM Lab 1)' },
 { id: 2, date: '2026-10-07', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: '7155 P2 COMPUTING (CR1)', room: 'R1 (COM Lab 1)' },
-// 15 Oct 2026 (Session 1)
+// October 15
 { id: 3, date: '2026-10-15', time: '02:00 PM', invigilator: 'Foo Shuan Chou', course: '1184 03 ENGLISH LANGUAGE LC', room: 'R1 (4-7 CR)' },
 { id: 4, date: '2026-10-15', time: '02:00 PM', invigilator: 'Kelly Tan Shi Hui', course: '1184 03 ENGLISH LANGUAGE LC', room: 'R2 (4-6 CR)' },
 { id: 5, date: '2026-10-15', time: '02:00 PM', invigilator: 'Lim Qun Hao', course: '1184 03 ENGLISH LANGUAGE LC', room: 'R3 (5-1 CR)' },
@@ -168,9 +169,8 @@ sessions: [
 { id: 7, date: '2026-10-15', time: '02:00 PM', invigilator: 'Wong Weng Han', course: '1184 03 ENGLISH LANGUAGE LC', room: 'R5 (4-5 CR) AA' },
 { id: 8, date: '2026-10-15', time: '02:00 PM', invigilator: 'Oh Wen-Ci', course: '1184 03 ENGLISH LANGUAGE LC', room: 'R6 (3-7 CR)' },
 { id: 9, date: '2026-10-15', time: '02:00 PM', invigilator: 'Sim Zheng Xian', course: '1184 03 ENGLISH LANGUAGE LC', room: 'R7 (3-8 CR)' },
-// 15 Oct 2026 (Session 2)
 { id: 10, date: '2026-10-15', time: '04:30 PM', invigilator: 'Lok Sin Min (Luo Xinming)', course: '1153 03 CHINESE LANGUAGE B LC', room: 'R1 (5-1 CR)' },
-// 19 Oct 2026 (Session 1)
+// October 19
 { id: 11, date: '2026-10-19', time: '01:30 PM', invigilator: 'Wong Sue Jin', course: '1184 01 ENGLISH LANGUAGE', room: 'R1 (4-5 CR)' },
 { id: 12, date: '2026-10-19', time: '01:30 PM', invigilator: 'Wong Weng Han', course: '1184 01 ENGLISH (CR 1)', room: 'R1 (4-5 CR)' },
 { id: 13, date: '2026-10-19', time: '01:30 PM', invigilator: 'Zhan Huili', course: '1184 01 ENGLISH LANGUAGE', room: 'R2 (5-1 CR)' },
@@ -183,16 +183,14 @@ sessions: [
 { id: 20, date: '2026-10-19', time: '01:30 PM', invigilator: 'Susan Liang Siew Geok', course: '1184 01 ENGLISH (CR 5)', room: 'R4 (LVL 5 DCR)' },
 { id: 21, date: '2026-10-19', time: '01:30 PM', invigilator: 'TAN XUE JI', course: '1184 01 ENGLISH LANGUAGE', room: 'R5 (LVL 6 DCR)' },
 { id: 22, date: '2026-10-19', time: '01:30 PM', invigilator: 'Ng Chong Hern Bennedic', course: '1184 01 ENGLISH LANGUAGE', room: 'R5 (LVL 6 DCR)' },
-// 19 Oct 2026 (Session 2)
 { id: 23, date: '2026-10-19', time: '04:05 PM', invigilator: 'Wong Weng Han', course: '1184 02 ENGLISH LANGUAGE', room: 'R1 (4-5 CR)' },
 { id: 24, date: '2026-10-19', time: '04:05 PM', invigilator: 'Teo Hua-Yue, Janice', course: '1184 02 ENGLISH LANGUAGE', room: 'R2 (5-1 CR)' },
 { id: 25, date: '2026-10-19', time: '04:05 PM', invigilator: 'Kelly Tan Shi Hui', course: '1184 02 ENGLISH LANGUAGE AA', room: 'R3 (4-7 CR) AA' },
 { id: 26, date: '2026-10-19', time: '04:05 PM', invigilator: 'Monisha Kaur', course: '1184 02 ENGLISH LANGUAGE', room: 'R4 (LVL 5 DCR)' },
 { id: 27, date: '2026-10-19', time: '04:05 PM', invigilator: 'Susan Liang Siew Geok', course: '1184 02 ENGLISH LANGUAGE', room: 'R4 (LVL 5 DCR)' },
-// 20 Oct 2026 (AM)
+// October 20
 { id: 28, date: '2026-10-20', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: '7155 01 COMPUTING', room: 'R1 (5-1 CR)' },
 { id: 29, date: '2026-10-20', time: '08:00 AM', invigilator: 'Lok Sin Min (Luo Xinming)', course: '7155 01 COMPUTING (CR1)', room: 'R1 (5-1 CR)' },
-// 20 Oct 2026 (PM)
 { id: 30, date: '2026-10-20', time: '02:00 PM', invigilator: 'Low Shi Ting', course: 'HUMANITIES (GEOGRAPHY/HISTORY)', room: 'R1 (4-7 CR) AA' },
 { id: 31, date: '2026-10-20', time: '02:00 PM', invigilator: 'Monisha Kaur', course: 'HUMANITIES (CR 1)', room: 'R1 (4-7 CR) AA' },
 { id: 32, date: '2026-10-20', time: '02:00 PM', invigilator: 'Sim Zheng Xian', course: '2260 02 HUMANITIES (SS, GEOGRAPHY)', room: 'R2 (4-5 CR)' },
@@ -201,24 +199,24 @@ sessions: [
 { id: 35, date: '2026-10-20', time: '02:00 PM', invigilator: 'Lim Qun Hao', course: '2260 02 HUMANITIES', room: 'R4 (LVL 5 DCR)' },
 { id: 36, date: '2026-10-20', time: '02:00 PM', invigilator: 'Wong Sue Jin', course: '2261 02 HUMANITIES', room: 'R5 (LVL 6 DCR)' },
 { id: 37, date: '2026-10-20', time: '02:00 PM', invigilator: 'Lok Sin Min (Luo Xinming)', course: '2261 02 HUMANITIES', room: 'R5 (LVL 6 DCR)' },
-// 21 Oct 2026
+// October 21
 { id: 38, date: '2026-10-21', time: '02:00 PM', invigilator: 'Monisha Kaur', course: '4052 01 MATHEMATICS', room: 'R1 (4-5 CR)' },
 { id: 40, date: '2026-10-21', time: '02:00 PM', invigilator: 'Oh Wen-Ci', course: '4052 01 MATHEMATICS AA', room: 'R2 (4-7 CR) AA' },
 { id: 41, date: '2026-10-21', time: '02:00 PM', invigilator: 'Sim Zheng Xian', course: '4052 01 MATHEMATICS', room: 'R3 (LVL 5 DCR)' },
 { id: 42, date: '2026-10-21', time: '02:00 PM', invigilator: 'Susan Liang Siew Geok', course: '4052 01 MATHEMATICS', room: 'R3 (LVL 5 DCR)' },
 { id: 43, date: '2026-10-21', time: '02:00 PM', invigilator: 'Teo Hua-Yue, Janice', course: '4052 01 MATHEMATICS', room: 'R4 (LVL 6 DCR)' },
 { id: 44, date: '2026-10-21', time: '02:00 PM', invigilator: 'Zhan Huili', course: '4052 01 MATHEMATICS', room: 'R4 (LVL 6 DCR)' },
-// 22 Oct 2026
+// October 22
 { id: 45, date: '2026-10-22', time: '02:00 PM', invigilator: 'Maimunah Binte Ithnin', course: '2279 01 GEOGRAPHY AA', room: 'R1 (4-7 CR) AA' },
 { id: 46, date: '2026-10-22', time: '02:00 PM', invigilator: 'Wong Sue Jin', course: '2279 01 GEOGRAPHY', room: 'R2 (LVL 6 DCR)' },
-// 23 Oct 2026
+// October 23
 { id: 47, date: '2026-10-23', time: '02:30 PM', invigilator: 'Wong Weng Han', course: '4052 02 MATHEMATICS', room: 'R1 (4-5 CR)' },
 { id: 48, date: '2026-10-23', time: '02:30 PM', invigilator: 'Ng Chong Hern Bennedic', course: '4052 02 MATHEMATICS AA', room: 'R2 (4-7 CR) AA' },
 { id: 49, date: '2026-10-23', time: '02:30 PM', invigilator: 'Oh Wen-Ci', course: '4052 02 MATHEMATICS', room: 'R3 (LVL 5 DCR)' },
 { id: 50, date: '2026-10-23', time: '02:30 PM', invigilator: 'Foo Shuan Chou', course: '4052 02 MATHEMATICS', room: 'R3 (LVL 5 DCR)' },
 { id: 51, date: '2026-10-23', time: '02:30 PM', invigilator: 'Sim Zheng Xian', course: '4052 02 MATHEMATICS', room: 'R4 (LVL 6 DCR)' },
 { id: 52, date: '2026-10-23', time: '02:30 PM', invigilator: 'Lim Qun Hao', course: '4052 02 MATHEMATICS', room: 'R4 (LVL 6 DCR)' },
-// 26 Oct 2026 (AM)
+// October 26
 { id: 53, date: '2026-10-26', time: '08:00 AM', invigilator: 'Teo Hua-Yue, Janice', course: '2260/2261 HUMANITIES SS AA', room: 'R1 (4-7 CR) AA' },
 { id: 54, date: '2026-10-26', time: '08:00 AM', invigilator: 'Lok Sin Min (Luo Xinming)', course: '2260/2261 HUMANITIES SS', room: 'R2 (4-5 CR)' },
 { id: 55, date: '2026-10-26', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: '2260/2261 HUMANITIES SS', room: 'R3 (5-1 CR)' },
@@ -226,19 +224,17 @@ sessions: [
 { id: 57, date: '2026-10-26', time: '08:00 AM', invigilator: 'Zhan Huili', course: '2260/2261 HUMANITIES SS', room: 'R4 (LVL 5 DCR)' },
 { id: 58, date: '2026-10-26', time: '08:00 AM', invigilator: 'Foo Shuan Chou', course: '2260/2261 HUMANITIES SS', room: 'R5 (LVL 6 DCR)' },
 { id: 59, date: '2026-10-26', time: '08:00 AM', invigilator: 'Kelly Tan Shi Hui', course: '2260/2261 HUMANITIES SS', room: 'R5 (LVL 6 DCR)' },
-// 26 Oct 2026 (PM)
 { id: 60, date: '2026-10-26', time: '02:00 PM', invigilator: 'Maimunah Binte Ithnin', course: '4049 01 ADDITIONAL MATH', room: 'R1 (5-1 CR)' },
 { id: 61, date: '2026-10-26', time: '02:00 PM', invigilator: 'Wong Weng Han', course: '4049 01 ADDITIONAL MATH AA', room: 'R2 (4-7 CR) AA' },
 { id: 62, date: '2026-10-26', time: '02:00 PM', invigilator: 'Ng Chong Hern Bennedic', course: '4049 01 ADDITIONAL MATH', room: 'R3 (LVL 6 DCR)' },
 { id: 63, date: '2026-10-26', time: '02:00 PM', invigilator: 'Oh Wen-Ci', course: '4049 01 ADDITIONAL MATH', room: 'R3 (LVL 6 DCR)' },
-// 27 Oct 2026 (AM)
+// October 27
 { id: 64, date: '2026-10-27', time: '08:00 AM', invigilator: 'Foo Shuan Chou', course: '2279 02 GEOGRAPHY', room: 'R1 (LVL 6 DCR)' },
 { id: 65, date: '2026-10-27', time: '08:00 AM', invigilator: 'Lok Sin Min (Luo Xinming)', course: '2279 02 GEOGRAPHY AA', room: 'R2 (4-7 CR) AA' },
 { id: 66, date: '2026-10-27', time: '10:30 AM', invigilator: 'Kelly Tan Shi Hui', course: '2065 02 LIT IN ENGLISH', room: 'R1 (4-5 CR)' },
 { id: 67, date: '2026-10-27', time: '10:30 AM', invigilator: 'Monisha Kaur', course: '2065 02 LIT IN ENGLISH AA', room: 'R2 (4-6 CR) AA' },
 { id: 68, date: '2026-10-27', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: '2065 01 LIT IN ENGLISH AA', room: 'R1 (4-6) AA' },
 { id: 69, date: '2026-10-27', time: '08:00 AM', invigilator: 'Wong Sue Jin', course: '2065 01 LIT IN ENGLISH', room: 'R2 (4-5 CR)' },
-// 27 Oct 2026 (PM)
 { id: 70, date: '2026-10-27', time: '02:00 PM', invigilator: 'Low Shi Ting', course: '5086 03 SCIENCE (PHY/CHEM)', room: 'R1 (4-6 CR) Scribe' },
 { id: 71, date: '2026-10-27', time: '02:00 PM', invigilator: 'Tan Seok Gek', course: '5086 03 SCIENCE (Scribe)', room: 'R1 (4-6 CR) Scribe' },
 { id: 72, date: '2026-10-27', time: '02:00 PM', invigilator: 'Oh Wen-Ci', course: '5086 03 SCIENCE (PHY/CHEM)', room: 'R2 (4-5 CR)' },
@@ -247,15 +243,14 @@ sessions: [
 { id: 75, date: '2026-10-27', time: '02:00 PM', invigilator: 'Susan Liang Siew Geok', course: '5086 03 SCIENCE', room: 'R4 (LVL 5 DCR)' },
 { id: 76, date: '2026-10-27', time: '02:00 PM', invigilator: 'Teo Hua-Yue, Janice', course: '6092 02 CHEMISTRY', room: 'R5 (LVL 6 DCR)' },
 { id: 77, date: '2026-10-27', time: '02:00 PM', invigilator: 'Wong Sue Jin', course: '6092 02 CHEMISTRY', room: 'R5 (LVL 6 DCR)' },
-// 28 Oct 2026 (AM)
+// October 28
 { id: 78, date: '2026-10-28', time: '08:00 AM', invigilator: 'Foo Shuan Chou', course: '4049 02 ADDITIONAL MATH', room: 'R1 (5-1 CR)' },
 { id: 79, date: '2026-10-28', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: '4049 02 ADDITIONAL MATH AA', room: 'R2 (4-7 CR) AA' },
 { id: 80, date: '2026-10-28', time: '08:00 AM', invigilator: 'Kelly Tan Shi Hui', course: '4049 02 ADDITIONAL MATH', room: 'R3 (LVL 6 DCR)' },
 { id: 81, date: '2026-10-28', time: '08:00 AM', invigilator: 'Lok Sin Min (Luo Xinming)', course: '4049 02 ADDITIONAL MATH', room: 'R3 (LVL 6 DCR)' },
-// 28 Oct 2026 (PM)
 { id: 82, date: '2026-10-28', time: '02:00 PM', invigilator: 'TAN XUE JI', course: '7087 01 PRINCIPLES OF ACCOUNTS', room: 'R4 (LVL 6 DCR)' },
 { id: 83, date: '2026-10-28', time: '02:00 PM', invigilator: 'Wong Weng Han', course: '7087 01 PRINCIPLES OF ACCOUNTS', room: 'R4 (LVL 6 DCR)' },
-// 29 Oct 2026
+// October 29
 { id: 84, date: '2026-10-29', time: '02:00 PM', invigilator: 'Zhan Huili', course: '5086 02 SCIENCE (PHY/CHEM)', room: 'R1 (4-6 CR) Scribe' },
 { id: 85, date: '2026-10-29', time: '02:00 PM', invigilator: 'Tan Seok Gek', course: '5086 02 SCIENCE (Scribe)', room: 'R1 (4-6 CR) Scribe' },
 { id: 86, date: '2026-10-29', time: '02:00 PM', invigilator: 'Ng Chong Hern Bennedic', course: '5086 02 SCIENCE', room: 'R2 (4-5 CR)' },
@@ -264,50 +259,46 @@ sessions: [
 { id: 89, date: '2026-10-29', time: '02:00 PM', invigilator: 'Monisha Kaur', course: '5086 02 SCIENCE', room: 'R4 (LVL 5 DCR)' },
 { id: 90, date: '2026-10-29', time: '02:00 PM', invigilator: 'Sim Zheng Xian', course: '6091 02 PHYSICS', room: 'R5 (LVL 6 DCR)' },
 { id: 91, date: '2026-10-29', time: '02:00 PM', invigilator: 'TAN XUE JI', course: '6091 02 PHYSICS', room: 'R5 (LVL 6 DCR)' },
-// 30 Oct 2026 (AM)
+// October 30
 { id: 92, date: '2026-10-30', time: '08:00 AM', invigilator: 'Teo Hua-Yue, Janice', course: '6093 02 BIOLOGY', room: 'R1 (5-1 CR)' },
 { id: 93, date: '2026-10-30', time: '08:00 AM', invigilator: 'Low Shi Ting', course: '6093 02 BIOLOGY AA', room: 'R2 (4-7 CR) AA' },
-// 30 Oct 2026 (PM)
 { id: 94, date: '2026-10-30', time: '02:30 PM', invigilator: 'Susan Liang Siew Geok', course: '7087 02 PRINCIPLES OF ACCOUNTS', room: 'R1 (LVL 6 DCR)' },
 { id: 95, date: '2026-10-30', time: '02:30 PM', invigilator: 'Oh Wen-Ci', course: '7087 02 PRINCIPLES OF ACCOUNTS', room: 'R1 (LVL 6 DCR)' },
-// 02 Nov 2026 (AM)
+// November 2
 { id: 96, date: '2026-11-02', time: '08:00 AM', invigilator: 'Lim Qun Hao', course: 'DESIGN & TECH / ART', room: 'R1 (5-1 CR)' },
 { id: 97, date: '2026-11-02', time: '08:00 AM', invigilator: 'Low Shi Ting', course: 'DESIGN & TECH / ART', room: 'R2 (4-5 CR)' },
 { id: 98, date: '2026-11-02', time: '08:00 AM', invigilator: 'Monisha Kaur', course: '7087.01 D&T / ART AA', room: 'R3 (4-7 CR) AA' },
 { id: 99, date: '2026-11-02', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: 'ART REVISED / SCRIBE', room: 'R4 (4-6 CR) Scribe' },
 { id: 100, date: '2026-11-02', time: '08:00 AM', invigilator: 'Tan Seok Gek', course: 'ART REVISED (Scribe)', room: 'R4 (4-6 CR) Scribe' },
-// 02 Nov 2026 (PM)
 { id: 101, date: '2026-11-02', time: '02:00 PM', invigilator: 'Oh Wen-Ci', course: '6097 01 NUTRITION & FOOD SCI', room: 'R1 (5-1 CR)' },
 { id: 102, date: '2026-11-02', time: '02:00 PM', invigilator: 'Sim Zheng Xian', course: '6097 01 NUTRITION & FOOD AA', room: 'R2 (4-7 CR) AA' },
 { id: 103, date: '2026-11-02', time: '02:30 PM', invigilator: 'Zhan Huili', course: '6091 01 PHYSICS AA', room: 'R1 (4-7 CR) AA' },
 { id: 104, date: '2026-11-02', time: '02:30 PM', invigilator: 'Teo Hua-Yue, Janice', course: '6091 01 PHYSICS', room: 'R2 (LVL 6 DCR)' },
-// 03 Nov 2026 (AM Session 1)
+// November 3
 { id: 105, date: '2026-11-03', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: 'LANGUAGES P1 AA', room: 'R1 (4-7 CR) AA' },
 { id: 106, date: '2026-11-03', time: '08:00 AM', invigilator: 'Zhan Huili', course: 'LANGUAGES P1', room: 'R2 (5-1 CR)' },
 { id: 107, date: '2026-11-03', time: '08:00 AM', invigilator: 'Low Shi Ting', course: 'LANGUAGES P1', room: 'R3 (LVL 5 DCR)' },
 { id: 108, date: '2026-11-03', time: '08:00 AM', invigilator: 'Kelly Tan Shi Hui', course: 'LANGUAGES P1', room: 'R3 (LVL 5 DCR)' },
 { id: 109, date: '2026-11-03', time: '08:00 AM', invigilator: 'TAN XUE JI', course: 'LANGUAGES P1', room: 'R4 (LVL 6 DCR)' },
 { id: 110, date: '2026-11-03', time: '08:00 AM', invigilator: 'Ng Chong Hern Bennedic', course: 'LANGUAGES P1', room: 'R4 (LVL 6 DCR)' },
-// 03 Nov 2026 (AM Session 2)
 { id: 111, date: '2026-11-03', time: '11:00 AM', invigilator: 'Foo Shuan Chou', course: 'LANGUAGES P2 AA', room: 'R1 (4-7 CR) AA' },
 { id: 112, date: '2026-11-03', time: '11:00 AM', invigilator: 'Monisha Kaur', course: 'LANGUAGES P2', room: 'R2 (5-1 CR)' },
 { id: 113, date: '2026-11-03', time: '11:00 AM', invigilator: 'Teo Hua-Yue, Janice', course: 'LANGUAGES P2 (CL/ML)', room: 'R3 (LVL 5 DCR)' },
 { id: 114, date: '2026-11-03', time: '11:00 AM', invigilator: 'Lok Sin Min (Luo Xinming)', course: 'LANGUAGES P2', room: 'R3 (LVL 5 DCR)' },
 { id: 115, date: '2026-11-03', time: '11:00 AM', invigilator: 'Lim Qun Hao', course: 'LANGUAGES P2', room: 'R4 (LVL 6 DCR)' },
 { id: 116, date: '2026-11-03', time: '11:00 AM', invigilator: 'Wong Weng Han', course: 'LANGUAGES P2', room: 'R4 (LVL 6 DCR)' },
-// 04 Nov 2026
+// November 4
 { id: 117, date: '2026-11-04', time: '08:00 AM', invigilator: 'Ng Chong Hern Bennedic', course: '1153/01 CHINESE B', room: 'R1 (5-1 CR)' },
 { id: 118, date: '2026-11-04', time: '08:00 AM', invigilator: 'TAN XUE JI', course: '6092/01 CHEMISTRY AA', room: 'R1 (4-7 CR) AA' },
 { id: 119, date: '2026-11-04', time: '08:00 AM', invigilator: 'Sim Zheng Xian', course: '6092/01 CHEMISTRY', room: 'R2 (LVL 6 DCR)' },
 { id: 120, date: '2026-11-04', time: '08:00 AM', invigilator: 'Susan Liang Siew Geok', course: '6092/01 CHEMISTRY', room: 'R2 (LVL 6 DCR)' },
-// 10 Nov 2026 (AM)
+// November 10
 { id: 121, date: '2026-11-10', time: '08:00 AM', invigilator: 'Wong Sue Jin', course: '5086/01 SCIENCE Scribe', room: 'R1 (4-6 CR) Scribe' },
 { id: 122, date: '2026-11-10', time: '08:00 AM', invigilator: 'Tan Seok Gek', course: '5086/01 SCIENCE (Scribe)', room: 'R1 (4-6 CR) Scribe' },
 { id: 123, date: '2026-11-10', time: '08:00 AM', invigilator: 'Low Shi Ting', course: '5086/01 SCIENCE (PHY/CHEM)', room: 'R2 (4-5 CR)' },
 { id: 124, date: '2026-11-10', time: '08:00 AM', invigilator: 'Maimunah Binte Ithnin', course: '5086/01 SCIENCE AA', room: 'R3 (4-7 CR) AA' },
 { id: 125, date: '2026-11-10', time: '08:00 AM', invigilator: 'Foo Shuan Chou', course: '5086/01 SCIENCE', room: 'R4 (LVL 5 DCR)' },
 { id: 126, date: '2026-11-10', time: '08:00 AM', invigilator: 'Kelly Tan Shi Hui', course: '5086/01 SCIENCE', room: 'R4 (LVL 5 DCR)' },
-// 10 Nov 2026 (PM)
 { id: 127, date: '2026-11-10', time: '02:00 PM', invigilator: 'Oh Wen-Ci', course: '6091 01 BIOLOGY AA', room: 'R1 (4-7 CR) AA' },
 { id: 128, date: '2026-11-10', time: '02:00 PM', invigilator: 'Wong Sue Jin', course: '6091 01 BIOLOGY', room: 'R2 (5-1 CR)' }
 ],
@@ -346,7 +337,7 @@ isCurrentMonth: true,
 isToday: fullDateStr === todayStr
 });
 }
-// Next month filler days
+// Next month filler days to complete grid alignment
 let remainingCells = 42 - days.length;
 if(remainingCells > 7) remainingCells -= 7;
 for (let i = 1; i <= remainingCells; i++) {
